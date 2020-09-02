@@ -4,7 +4,7 @@ import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 
-import java.util.List;
+import java.util.Collection;
 
 public abstract class Piece {
     //coordinate and color on the board
@@ -22,5 +22,5 @@ public abstract class Piece {
 
     //Passes in the board object and extending classes will implement calculate legal moves for a given Piece,
     // ie. Knight, Queen, Pawn.
-    public abstract List<Move> calcLegalMove(final Board board);
+    public abstract Collection<Move> calcLegalMove(final Board board);
 }

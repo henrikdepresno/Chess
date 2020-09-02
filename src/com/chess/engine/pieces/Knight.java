@@ -8,6 +8,7 @@ import com.chess.engine.board.Square;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Knight extends Piece{
@@ -20,25 +21,31 @@ public class Knight extends Piece{
     }
 
     @Override
-    public List<Move> calcLegalMove(Board board) {
+    public Collection<Move> calcLegalMove(Board board) {
 
-        int potentialDestinationCoordinate;
         final List<Move> legalMoves = new ArrayList<>();
-
         /*
         We need to loop through our POTENTIAL_MOVE_COORDINATES to figure out if:
         A: is it on the board? not out of bounds
         B: is the square empty? how do we move there?
         C: is the square occupied by enemy? How do we knock out the enemy piece?
-        */
-        for(final int currentCoordinate: POTENTIAL_MOVE_COORDINATES){
+        */                                                             
+        for(final int currentCoordinateOffset: POTENTIAL_MOVE_COORDINATES){
+            final int potentialDestinationCoordinate; //better readability and more local scope
             //apply offset to current coordinate
-            potentialDestinationCoordinate = this.piecePosition + currentCoordinate;
+            potentialDestinationCoordinate = this.piecePosition + currentCoordinateOffset;
             if(BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate) /*if the square is not outside the range*/){
                 final Square potentialDestinationSquare = board.getSquare(potentialDestinationCoordinate);
+                if(isFirstColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
+                        isSecondColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
+                        isSeventhColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
+                        isEighthColummnWithExclusions(this.piecePosition, currentCoordinateOffset)){
+                    continue;
+                }
+                //If the square is empty, make a move
                 if(!potentialDestinationSquare.isSquareOccupied()){
                     legalMoves.add(new Move());
-                } else{
+                } else{ //If the square is occupied by enemy, make another move
                     final Piece pieceAtDestination = potentialDestinationSquare.getPiece();
                     final Color pieceColor = pieceAtDestination.getPieceColor();
                     //Enemy piece
@@ -49,6 +56,26 @@ public class Knight extends Piece{
             }
         }
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    //If the Knight is on the first column, it will have certain edge cases that need to be addressed.
+    //We are checking if: Is it in the 1st,2nd,7th,8th column? AND is the offset one that will make it move unlawfully?
+    private static boolean isFirstColumnWithExclusions(final int currentPosition, final int coordinateOffset){
+        return BoardUtils.FIRST_COLUMN[currentPosition] && (coordinateOffset == -17 || coordinateOffset == -10 ||
+                coordinateOffset == 6 || coordinateOffset == 15);
+    }
+
+    private static boolean isSecondColumnWithExclusions(final int currentPosition, final int coordinateOffset){
+        return BoardUtils.SECOND_COLUMN[currentPosition] && (coordinateOffset == -10 || coordinateOffset == 6);
+    }
+                                                        
+    private static boolean isSeventhColumnWithExclusions(final int currentPosition, final int coordinateOffset){
+        return BoardUtils.SEVENTH_COLUMN[currentPosition] && (coordinateOffset == -6 || coordinateOffset == 10);
+    }
+
+    private static boolean isEighthColummnWithExclusions(final int currentPosition, final int coordinateOffset){
+        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (coordinateOffset == -15 || coordinateOffset == -6 ||
+                coordinateOffset == 10 || coordinateOffset == 17);
     }
 
 
