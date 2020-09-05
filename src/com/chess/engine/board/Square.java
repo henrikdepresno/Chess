@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //Creating an abstract class to allow for polymorphism to check if tile is occupied or not.
-// Will return if occupied and the piece itself, if any.
+// Will return Piece if occupied
 public abstract class Square {
 
     //protected for subclass access only
@@ -19,11 +19,11 @@ public abstract class Square {
     private static Map<Integer, EmptySquare> createAllSquares() {
         final Map<Integer, EmptySquare> emptySquareMap = new HashMap<>();
 
-        for(int i = 0; i < 64; i++){
+        for(int i = 0; i < BoardUtils.NUM_SQUARES; i++){
             emptySquareMap.put(i, new EmptySquare(i));
         }
 
-        //enforcing immutability by returning a non-changeable map, thanks google/josh
+        //enforcing immutability by returning a non-changeable map, from Guava library
         return ImmutableMap.copyOf(emptySquareMap);
     }
 
@@ -32,7 +32,7 @@ public abstract class Square {
         return piece != null ? new OccupiedSquare(squareCoordinate, piece) : EMPTY_SQUARES_CACHE.get(squareCoordinate);
     }
 
-    private Square(int squareCoordinate){
+    private Square(final int squareCoordinate){
         this.squareCoordinate = squareCoordinate;
     }
 

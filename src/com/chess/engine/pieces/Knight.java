@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.chess.engine.board.Move.*;
+
 public class Knight extends Piece{
 
     //Fixed set of destination coordinates for our Knight
@@ -25,10 +27,10 @@ public class Knight extends Piece{
 
         final List<Move> legalMoves = new ArrayList<>();
         /*
-        We need to loop through our POTENTIAL_MOVE_COORDINATES to figure out if:
-        A: is it on the board? not out of bounds
-        B: is the square empty? how do we move there?
-        C: is the square occupied by enemy? How do we knock out the enemy piece?
+        * We need to loop through our POTENTIAL_MOVE_COORDINATES to figure out if:
+        * A: is it on the board? not out of bounds
+        * B: is the square empty? how do we move there?
+        * C: is the square occupied by enemy? How do we knock out the enemy piece?
         */                                                             
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_COORDINATES){
             final int potentialDestinationCoordinate; //better readability and more local scope
@@ -44,13 +46,13 @@ public class Knight extends Piece{
                 }
                 //If the square is empty, make a move
                 if(!potentialDestinationSquare.isSquareOccupied()){
-                    legalMoves.add(new Move());
+                    legalMoves.add(new NormalMove(board, this, potentialDestinationCoordinate));
                 } else{ //If the square is occupied by enemy, make another move
                     final Piece pieceAtDestination = potentialDestinationSquare.getPiece();
                     final Color pieceColor = pieceAtDestination.getPieceColor();
                     //Enemy piece
                     if(this.pieceColor != pieceColor){
-                        legalMoves.add(new Move());
+                        legalMoves.add(new AttackingMove(board, this, potentialDestinationCoordinate, pieceAtDestination));
                     }
                 }
             }
