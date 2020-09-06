@@ -16,7 +16,6 @@ import static com.chess.engine.board.Move.*;
 public class Bishop extends Piece{
 
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
-    
 
     Bishop(int piecePosition, Color pieceColor) {
         super(piecePosition, pieceColor);
@@ -27,6 +26,9 @@ public class Bishop extends Piece{
 
         final List<Move> legalMoves = new ArrayList<>();
 
+        //Similar logic here as we had with our Knight, except we don't have a constant number of moves.
+        //We need to loop through all potential moves this time and apply the offset to each position
+        //and check its validity.
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_VECTOR_COORDINATES){
             int potentialDestinationCoordinate = this.piecePosition;
             while(BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
