@@ -41,7 +41,7 @@ public class Knight extends Piece{
                 if(isFirstColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
                         isSecondColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
                         isSeventhColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
-                        isEighthColummnWithExclusions(this.piecePosition, currentCoordinateOffset)){
+                        isEighthColumnWithExclusions(this.piecePosition, currentCoordinateOffset)){
                     continue;
                 }
                 //If the square is empty, make a move
@@ -75,7 +75,7 @@ public class Knight extends Piece{
         return BoardUtils.SEVENTH_COLUMN[currentPosition] && (coordinateOffset == -6 || coordinateOffset == 10);
     }
 
-    private static boolean isEighthColummnWithExclusions(final int currentPosition, final int coordinateOffset){
+    private static boolean isEighthColumnWithExclusions(final int currentPosition, final int coordinateOffset){
         return BoardUtils.EIGHTH_COLUMN[currentPosition] && (coordinateOffset == -15 || coordinateOffset == -6 ||
                 coordinateOffset == 10 || coordinateOffset == 17);
     }
