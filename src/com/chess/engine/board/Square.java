@@ -1,7 +1,8 @@
 package com.chess.engine.board;
 
 import com.chess.engine.pieces.Piece;
-import com.google.common.collect.ImmutableMap;
+
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +24,8 @@ public abstract class Square {
             emptySquareMap.put(i, new EmptySquare(i));
         }
 
-        //enforcing immutability by returning a non-changeable map, from Guava library
-        return ImmutableMap.copyOf(emptySquareMap);
+        //enforcing immutability by returning a non-changeable map
+        return Collections.unmodifiableMap(emptySquareMap);
     }
 
     //creating a static factory method to enable user to create occupied square
