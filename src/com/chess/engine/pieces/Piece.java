@@ -10,14 +10,20 @@ public abstract class Piece {
     //coordinate and color on the board
     protected final int piecePosition;
     protected final Color pieceColor;
+    protected final boolean isFirstMove;
 
     Piece(final int piecePosition, final Color pieceColor){
         this.piecePosition = piecePosition;
         this.pieceColor = pieceColor;
+        this.isFirstMove = false;
     }
 
     public Color getPieceColor(){
         return this.pieceColor;
+    }
+
+    public boolean isFirstMove(){
+        return this.isFirstMove;
     }
 
     //Passes in the board object and extending classes will implement calculate legal moves for a given Piece,

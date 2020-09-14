@@ -14,19 +14,19 @@ import java.util.List;
 
 public class Pawn extends Piece{
 
-    private final static int[] POTENTIAL_MOVE_COORDINATES = {8};
+    private final static int[] POTENTIAL_MOVE_COORDINATES = {8, 16};
 
-    Pawn(int piecePosition, Color pieceColor) {
+    Pawn(final int piecePosition, final Color pieceColor) {
         super(piecePosition, pieceColor);
     }
 
     @Override
-    public Collection<Move> calcLegalMove(Board board) {
+    public Collection<Move> calcLegalMove(final Board board) {
 
         final List<Move> legalMoves = new ArrayList<>();
 
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_COORDINATES){
-            int potentialDestinationCoordinate = this.piecePosition + (this.getPieceColor().getDirection()*currentCoordinateOffset);
+            final int potentialDestinationCoordinate = this.piecePosition + (this.getPieceColor().getDirection()*currentCoordinateOffset);
 
             if(!BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
                 continue;
@@ -35,6 +35,14 @@ public class Pawn extends Piece{
             if(potentialDestinationCoordinate == 8 && !board.getSquare(potentialDestinationCoordinate).isSquareOccupied()){
                 //TODO: more work to do here
                 legalMoves.add(new NormalMove(board, this, potentialDestinationCoordinate));
+            } else if(currentCoordinateOffset == 16 && this.isFirstMove()
+                                                    && (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceColor().isBlack())
+                                                    || (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceColor().isWhite())){
+                final int behindPotentialDestinationCoordinate = this.piecePosition + (this.getPieceColor().getDirection()*8);
+                if(!board.getSquare(behindPotentialDestinationCoordinate).isSquareOccupied() &&
+                   !board.getSquare(potentialDestinationCoordinate).isSquareOccupied()){
+                    legalMoves.add(new NormalMove(board, this, potentialDestinationCoordinate));
+                }
             }
         }
 
