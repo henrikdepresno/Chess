@@ -27,10 +27,6 @@ public class Pawn extends Piece{
 
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_COORDINATES){
             final int potentialDestinationCoordinate = this.piecePosition + (this.getPieceColor().getDirection()*currentCoordinateOffset);
-            if(isFirstColumnWithExclusions(potentialDestinationCoordinate, currentCoordinateOffset, this.pieceColor) ||
-                    isEighthColumnWithExclusions(potentialDestinationCoordinate, currentCoordinateOffset, this.pieceColor)){
-                break;
-            }
             if(!BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
                 continue;
             }
@@ -45,16 +41,31 @@ public class Pawn extends Piece{
                    !board.getSquare(potentialDestinationCoordinate).isSquareOccupied()){
                     legalMoves.add(new NormalMove(board, this, potentialDestinationCoordinate));
                 }
-            } else if(currentCoordinateOffset == 7){
-
-            } else if(currentCoordinateOffset == 9){
-
+            } else if(currentCoordinateOffset == 7 &&
+                    !((BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceColor.isWhite() ||
+                      (BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceColor.isBlack())))){
+                if(board.getSquare(potentialDestinationCoordinate).isSquareOccupied()){
+                    final Piece pieceAtDestination = board.getSquare(potentialDestinationCoordinate).getPiece();
+                    if(this.pieceColor != pieceAtDestination.getPieceColor()){
+                        //TODO more work here!
+                        legalMoves.add(new Move.AttackingMove(board, this, potentialDestinationCoordinate, pieceAtDestination));
+                    }
+                }
+            } else if(currentCoordinateOffset == 9 &&
+                    !((BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceColor.isWhite()) ||
+                      (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceColor.isBlack()))){
+                if(board.getSquare(potentialDestinationCoordinate).isSquareOccupied()){
+                    final Piece pieceAtDestination = board.getSquare(potentialDestinationCoordinate).getPiece();
+                    if(this.pieceColor != pieceAtDestination.getPieceColor()){
+                        //TODO more work here!
+                        legalMoves.add(new Move.AttackingMove(board, this, potentialDestinationCoordinate, pieceAtDestination));
+                    }
+                }
             }
         }
-
         return Collections.unmodifiableList(legalMoves);
     }
-
+    /* TODO We could also use the below design strategy that follows the rules for our other piece exclusions.
     private static boolean isFirstColumnWithExclusions(final int currentPosition, final int coordinateOffset, final Color color){
         return(BoardUtils.FIRST_COLUMN[currentPosition] && coordinateOffset == 7 && color.isBlack() ||
                BoardUtils.FIRST_COLUMN[currentPosition] && coordinateOffset == 9 && color.isWhite());
@@ -64,4 +75,5 @@ public class Pawn extends Piece{
         return(BoardUtils.EIGHTH_COLUMN[currentPosition] && coordinateOffset == 7 && color.isWhite() ||
                BoardUtils.EIGHTH_COLUMN[currentPosition] && coordinateOffset == 9 && color.isBlack());
     }
+    */
 }
