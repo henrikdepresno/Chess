@@ -33,9 +33,8 @@ public class Knight extends Piece{
         * C: is the square occupied by enemy? How do we knock out the enemy piece?
         */                                                             
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_COORDINATES){
-            final int potentialDestinationCoordinate; //better readability and more local scope
-            //apply offset to current coordinate
-            potentialDestinationCoordinate = this.piecePosition + currentCoordinateOffset;
+            // Kept inside the loop for better readability. Apply the offset.
+            final int potentialDestinationCoordinate = this.piecePosition + currentCoordinateOffset;
             if(BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate) /*if the square is not outside the range*/){
                 final Square potentialDestinationSquare = board.getSquare(potentialDestinationCoordinate);
                 if(isFirstColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
