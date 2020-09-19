@@ -17,7 +17,7 @@ public class King extends Piece{
 
     private final static int[] POTENTIAL_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    King(int piecePosition, Color pieceColor) {
+    public King(Color pieceColor, int piecePosition) {
         super(piecePosition, pieceColor);
     }
 

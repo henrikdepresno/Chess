@@ -16,7 +16,7 @@ public class Pawn extends Piece{
 
     private final static int[] POTENTIAL_MOVE_COORDINATES = {8, 16, 7, 9};
 
-    Pawn(final int piecePosition, final Color pieceColor) {
+    public Pawn(final Color pieceColor, final int piecePosition) {
         super(piecePosition, pieceColor);
     }
 

@@ -15,7 +15,7 @@ public class Queen extends Piece{
 
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    Queen(int piecePosition, Color pieceColor) {
+    public Queen(Color pieceColor, int piecePosition) {
         super(piecePosition, pieceColor);
     }
 

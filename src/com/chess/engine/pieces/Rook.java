@@ -15,7 +15,7 @@ public class Rook extends Piece{
 
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDINATES = {-1, -8, 1, 8};
 
-    Rook(final int piecePosition, final Color pieceColor){
+    public Rook(final Color pieceColor, final int piecePosition){
         super(piecePosition, pieceColor);
     }
 
