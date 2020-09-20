@@ -31,4 +31,24 @@ public abstract class Piece {
     //Passes in the board object and extending classes will implement calculate legal moves for a given Piece,
     // ie. Knight, Queen, Pawn.
     public abstract Collection<Move> calcLegalMove(final Board board);
+
+    public enum PieceType{
+        ROOK("R"),
+        KNIGHT("N"),
+        BISHOP("B"),
+        QUEEN("Q"),
+        KING("K"),
+        PAWN("P");
+
+        private String pieceName;
+
+        PieceType(final String pieceName){
+            this.pieceName = pieceName;
+        }
+
+        @Override
+        public String toString() {
+            return this.pieceName;
+        }
+    }
 }

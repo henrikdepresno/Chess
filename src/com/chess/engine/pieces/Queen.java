@@ -37,7 +37,7 @@ public class Queen extends Piece{
                 potentialDestinationCoordinate += currentCoordinateOffset;
                 if(BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
                     final Square potentialDestinationSquare = board.getSquare(potentialDestinationCoordinate);
-                    if(!potentialDestinationSquare.isSquareOccupied()){
+                    if(potentialDestinationSquare == null){
                         legalMoves.add(new Move.NormalMove(board, this, potentialDestinationCoordinate));
                     } else{
                         final Piece pieceAtDestination = potentialDestinationSquare.getPiece();
@@ -51,6 +51,11 @@ public class Queen extends Piece{
             }
         }
         return Collections.unmodifiableList(legalMoves);
+    }
+
+    @Override
+    public String toString(){
+        return PieceType.QUEEN.toString();
     }
 
     private static boolean isFirstColumnWithExclusions(final int currentPosition, final int coordinateOffset){

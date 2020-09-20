@@ -18,6 +18,30 @@ public class Board {
         this.gameBoard = createGameBoard(builder);
         this.blackPieces = calculateActivePieces(this.gameBoard, Color.BLACK);
         this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
+
+        final Collection<Move> blackLegalMoves = calculateLegalMoves(this.blackPieces);
+        final Collection<Move> whiteLegalMoves = calculateLegalMoves(this.whitePieces);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < BoardUtils.NUM_SQUARES; i++){
+            final String squareText = this.gameBoard.get(i).toString();
+            sb.append(String.format("%3s", squareText));
+            if((i+1) % BoardUtils.NUM_SQUARES_PER_ROW == 0){
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces){
+        final List<Move> legalMoves = new ArrayList<>();
+        for(final Piece piece: pieces){
+           legalMoves.addAll(piece.calcLegalMove(this));
+        }
+        return Collections.unmodifiableList(legalMoves);
     }
                                               
     public Square getSquare(final int squareCoordinate){
@@ -25,7 +49,6 @@ public class Board {
     }
 
     private static Collection<Piece> calculateActivePieces(final List<Square> board, final Color color){
-
         final List<Piece> activePieces = new ArrayList<>();
         for(final Square square: board){
             if(square.isSquareOccupied()){
@@ -87,7 +110,6 @@ public class Board {
 
         // Making sure that White will be the one to move first
         builder.setMoveMaker(Color.WHITE);
-
         return builder.build();
     }
 
@@ -95,6 +117,10 @@ public class Board {
 
         Map<Integer, Piece> boardConfig;
         Color nextMoveMaker;
+
+        public Builder() {
+            this.boardConfig = new HashMap<>();
+        }
 
         public Builder setPiece(Piece piece){
             this.boardConfig.put(piece.getPiecePosition(), piece);

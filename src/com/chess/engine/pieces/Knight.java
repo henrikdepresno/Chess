@@ -44,7 +44,7 @@ public class Knight extends Piece{
                     continue;
                 }
                 //If the square is empty, make a move
-                if(!potentialDestinationSquare.isSquareOccupied()){
+                if(potentialDestinationSquare == null){
                     legalMoves.add(new NormalMove(board, this, potentialDestinationCoordinate));
                 } else{ //If the square is occupied by enemy, make another move
                     final Piece pieceAtDestination = potentialDestinationSquare.getPiece();
@@ -57,6 +57,11 @@ public class Knight extends Piece{
             }
         }
         return Collections.unmodifiableList(legalMoves);
+    }
+
+    @Override
+    public String toString(){
+        return PieceType.KNIGHT.toString();
     }
 
     //If the Knight is on the first column, it will have certain edge cases that need to be addressed.
