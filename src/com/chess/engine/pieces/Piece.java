@@ -7,7 +7,8 @@ import com.chess.engine.board.Move;
 import java.util.Collection;
 
 public abstract class Piece {
-    //coordinate and color on the board
+
+    // All pieces require the current position on the board, the color and if it's made it's first move or not.
     protected final int piecePosition;
     protected final Color pieceColor;
     protected final boolean isFirstMove;
@@ -18,6 +19,7 @@ public abstract class Piece {
         this.isFirstMove = false;
     }
 
+    // Getters
     public Color getPieceColor(){
         return this.pieceColor;
     }
@@ -28,10 +30,11 @@ public abstract class Piece {
         return this.isFirstMove;
     }
 
-    //Passes in the board object and extending classes will implement calculate legal moves for a given Piece,
+    // Passes in a board object that will be used to calculate legal moves for a given Piece,
     // ie. Knight, Queen, Pawn.
     public abstract Collection<Move> calcLegalMove(final Board board);
 
+    // Nested enum class used for our toString testing print method.
     public enum PieceType{
         ROOK("R"),
         KNIGHT("N"),

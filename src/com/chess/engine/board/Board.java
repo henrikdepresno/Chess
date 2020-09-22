@@ -8,21 +8,25 @@ import java.util.*;
 
 public class Board {
 
-    //We are choosing a List since it can be Immutable, unlike arrays.
+    // We are choosing a List of squares since it can be Immutable, unlike arrays.
     private final List<Square> gameBoard;
+
+    // We will then have our collection of pieces. This will be used to store all our pieces on the board.
     private final Collection<Piece> blackPieces;
     private final Collection<Piece> whitePieces;
 
-
+    // Using Builder pattern for the constructor
     private Board(Builder builder){
         this.gameBoard = createGameBoard(builder);
         this.blackPieces = calculateActivePieces(this.gameBoard, Color.BLACK);
         this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
 
+        // Storing a collection of all legal moves for all pieces when game starts.
         final Collection<Move> blackLegalMoves = calculateLegalMoves(this.blackPieces);
         final Collection<Move> whiteLegalMoves = calculateLegalMoves(this.whitePieces);
     }
 
+    // Used for early testing, will print out a board in the terminal
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -36,6 +40,7 @@ public class Board {
         return sb.toString();
     }
 
+    // For all given Pieces, regardless of color, return all the legalmoves on the current board.
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces){
         final List<Move> legalMoves = new ArrayList<>();
         for(final Piece piece: pieces){
@@ -43,11 +48,13 @@ public class Board {
         }
         return Collections.unmodifiableList(legalMoves);
     }
-                                              
+
+    // Getting the coordinate of a square
     public Square getSquare(final int squareCoordinate){
         return null;
     }
 
+    // For each occupied square on the board, get the activePieces.
     private static Collection<Piece> calculateActivePieces(final List<Square> board, final Color color){
         final List<Piece> activePieces = new ArrayList<>();
         for(final Square square: board){
@@ -61,6 +68,7 @@ public class Board {
         return Collections.unmodifiableList(activePieces);
     }
 
+    // Initialize the chess board for the first time.
     private static List<Square> createGameBoard(final Builder builder){
         final Square[] squares = new Square[BoardUtils.NUM_SQUARES];
         for(int i = 0; i < BoardUtils.NUM_SQUARES; i++){
@@ -69,6 +77,7 @@ public class Board {
         return ImmutableList.copyOf(squares);
     }
 
+    // Initializing all the pieces on the baord and creating them in a given squareCoordinate.
     public static Board createStandardBoard(){
         final Builder builder = new Builder();
 
@@ -113,6 +122,7 @@ public class Board {
         return builder.build();
     }
 
+    // Builder constructor
     public static class Builder{
 
         Map<Integer, Piece> boardConfig;

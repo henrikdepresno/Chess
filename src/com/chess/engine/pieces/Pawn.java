@@ -14,6 +14,8 @@ import java.util.List;
 
 public class Pawn extends Piece{
 
+    // Fixed set of destination coordinates for our Pawn. A Pawn is not a sliding piece,
+    // so these coordinates offsets can always be applied with no further iterations to check paths.
     private final static int[] POTENTIAL_MOVE_COORDINATES = {8, 16, 7, 9};
 
     public Pawn(final Color pieceColor, final int piecePosition) {
@@ -25,11 +27,19 @@ public class Pawn extends Piece{
 
         final List<Move> legalMoves = new ArrayList<>();
 
+        // Like always, loop through our potential coords and add it to our current position.
+        // The difference for a Pawn is the directionality for a particular color.
+        // If White, check positive coords.
+        // If Black, check the negative coords
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_COORDINATES){
             final int potentialDestinationCoordinate = this.piecePosition + (this.getPieceColor().getDirection()*currentCoordinateOffset);
+
+            // Check the range
             if(!BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
                 continue;
             }
+
+            // Here we have a different exclusion design pattern. We should change this later to reflect the other pieces.
             if(potentialDestinationCoordinate == 8 && !board.getSquare(potentialDestinationCoordinate).isSquareOccupied()){
                 //TODO: more work to do here
                 legalMoves.add(new NormalMove(board, this, potentialDestinationCoordinate));

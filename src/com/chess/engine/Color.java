@@ -1,5 +1,8 @@
 package com.chess.engine;
 
+// Enum class for directionality of pieces and getting their color.
+// White pawns for example can only move north.
+// Black pawns can only move south.
 public enum Color {
     WHITE{
         @Override

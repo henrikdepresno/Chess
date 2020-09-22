@@ -13,6 +13,8 @@ import java.util.List;
 
 public class Queen extends Piece{
 
+    // A queen has the union of potential moves of a rook and a bishop.
+    // It is also a sliding piece which means we need to check all possible paths.
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     public Queen(Color pieceColor, int piecePosition) {
@@ -24,17 +26,24 @@ public class Queen extends Piece{
 
         final List<Move> legalMoves = new ArrayList<>();
 
-        //Similar logic here as we had with our Knight, except we don't have a constant number of moves.
-        //We need to loop through all potential moves this time and apply the offset to each position
-        //and check its validity.
+        //Similar logic here as we had with our Rook
+        // We need to loop through all potential moves this time and apply the offset to each position
+        // and check its validity. The Rook and Bishop will have very similar implementation since they are sliding pieces.
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_VECTOR_COORDINATES){
             int potentialDestinationCoordinate = this.piecePosition;
+
+            // While the current position we are on is valid, check for exclusions and apply the offset.
             while(BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
+
+                // Check for our edge cases, if true, break out of the while, and go to next potential coordinate.
                 if(isFirstColumnWithExclusions(potentialDestinationCoordinate, currentCoordinateOffset) ||
                         isEighthColumnWithExclusions(potentialDestinationCoordinate, currentCoordinateOffset)){
                     break;
                 }
                 potentialDestinationCoordinate += currentCoordinateOffset;
+
+                // Check again if the new coordinate is valid, if valid, get the square on the coordinate.
+                // Then check if the square is occupied or not, and add that Move to our list of legal Moves
                 if(BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
                     final Square potentialDestinationSquare = board.getSquare(potentialDestinationCoordinate);
                     if(potentialDestinationSquare == null){
@@ -53,15 +62,18 @@ public class Queen extends Piece{
         return Collections.unmodifiableList(legalMoves);
     }
 
+    // toString for early testing
     @Override
     public String toString(){
         return PieceType.QUEEN.toString();
     }
 
+    // The exclusions or edge cases for a Queen on the first or leftmost column.
     private static boolean isFirstColumnWithExclusions(final int currentPosition, final int coordinateOffset){
         return BoardUtils.FIRST_COLUMN[currentPosition] && (coordinateOffset == -1 || coordinateOffset == -9 || coordinateOffset == 7);
     }
 
+    // The exclusions or edge cases for a Queen on the last or rightmost column.
     private static boolean isEighthColumnWithExclusions(final int currentPosition, final int coordinateOffset){
         return BoardUtils.EIGHTH_COLUMN[currentPosition] && (coordinateOffset == 1 || coordinateOffset == -7 || coordinateOffset == 9);
     }

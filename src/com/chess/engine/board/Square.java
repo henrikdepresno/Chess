@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-//Creating an abstract class to allow for polymorphism to check if tile is occupied or not.
+// Creating an abstract class to allow for polymorphism to check if tile is occupied or not.
 // Will return Piece if occupied
 public abstract class Square {
 

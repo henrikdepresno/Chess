@@ -15,6 +15,8 @@ import static com.chess.engine.board.Move.*;
 
 public class King extends Piece{
 
+    // Fixed set of destination coordinates for our King. A King is not a sliding piece,
+    // so these coordinates offsets can always be applied with no further iterations to check paths.
     private final static int[] POTENTIAL_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     public King(Color pieceColor, int piecePosition) {
@@ -26,16 +28,22 @@ public class King extends Piece{
 
         final List<Move> legalMoves = new ArrayList<>();
 
+        // We need to loop through all potential moves this time and apply the offset to each position
+        // and check its validity. The Knight has a similar implementation.
         for(final int currentCoordinateOffset: POTENTIAL_MOVE_COORDINATES){
+
+            // For each coordinate offset defined above in this class, apply the offset to our current coordinate position.
             final int potentialDestinationCoordinate = this.piecePosition + currentCoordinateOffset;
 
-            if(isFirstColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
-               isEighthColumnWithExclusions(this.piecePosition, currentCoordinateOffset)){
-                continue;
-            }
-            
-            // Check that we don't go outside our board
+            // Check if the new coordinate is valid, if valid, check exclusion and get the square on the coordinate.
+            // Then check if the square is occupied or not, and add that Move to our list of legal Moves
             if(BoardUtils.isValidSquareCoordinate(potentialDestinationCoordinate)){
+
+                // Check for our edge cases, if true, break out of the for loop, and go to next potential coordinate.
+                if(isFirstColumnWithExclusions(this.piecePosition, currentCoordinateOffset) ||
+                        isEighthColumnWithExclusions(this.piecePosition, currentCoordinateOffset)){
+                    continue;
+                }
                 final Square potentialDestinationSquare = board.getSquare(potentialDestinationCoordinate);
 
                 if(potentialDestinationSquare == null){
@@ -52,15 +60,18 @@ public class King extends Piece{
         return Collections.unmodifiableList(legalMoves);
     }
 
+    // toString for testing
     public String toString(){
         return PieceType.KING.toString();
     }
 
+    // Exclusions for the King
     private static boolean isFirstColumnWithExclusions(final int currentPosition, final int coordinateOffset){
         return BoardUtils.FIRST_COLUMN[currentPosition] && (coordinateOffset == -1 || coordinateOffset == -9 ||
                 coordinateOffset == 7);
     }
 
+    // Exclusions for the King
     private static boolean isEighthColumnWithExclusions(final int currentPosition, final int coordinateOffset){
         return BoardUtils.EIGHTH_COLUMN[currentPosition] && (coordinateOffset == -7 || coordinateOffset == 1 ||
                 coordinateOffset == 9);
