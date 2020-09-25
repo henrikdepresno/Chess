@@ -20,7 +20,7 @@ public class Bishop extends Piece{
     private final static int[] POTENTIAL_MOVE_VECTOR_COORDINATES = {-9, -7, 7, 9};
 
     public Bishop(Color pieceColor, int piecePosition) {
-        super(piecePosition, pieceColor);
+        super(PieceType.BISHOP, piecePosition, pieceColor);
     }
 
     @Override

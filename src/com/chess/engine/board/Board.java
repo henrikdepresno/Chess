@@ -2,6 +2,8 @@ package com.chess.engine.board;
 
 import com.chess.engine.Color;
 import com.chess.engine.pieces.*;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 
 import java.util.*;
@@ -15,6 +17,10 @@ public class Board {
     private final Collection<Piece> blackPieces;
     private final Collection<Piece> whitePieces;
 
+    // Creating our player objects, we will relate these with a common superclas
+    private final WhitePlayer whitePlayer;
+    private final BlackPlayer blackPlayer;
+
     // Using Builder pattern for the constructor
     private Board(Builder builder){
         this.gameBoard = createGameBoard(builder);
@@ -24,20 +30,10 @@ public class Board {
         // Storing a collection of all legal moves for all pieces when game starts.
         final Collection<Move> blackLegalMoves = calculateLegalMoves(this.blackPieces);
         final Collection<Move> whiteLegalMoves = calculateLegalMoves(this.whitePieces);
-    }
 
-    // Used for early testing, will print out a board in the terminal
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < BoardUtils.NUM_SQUARES; i++){
-            final String squareText = this.gameBoard.get(i).toString();
-            sb.append(String.format("%3s", squareText));
-            if((i+1) % BoardUtils.NUM_SQUARES_PER_ROW == 0){
-                sb.append("\n");
-            }
-        }
-        return sb.toString();
+        // Constructing the players with their own moves and the counterpart moves to determine legal castle moves
+        this.whitePlayer = new WhitePlayer(this, whiteLegalMoves, blackLegalMoves);
+        this.blackPlayer = new BlackPlayer(this, whiteLegalMoves, blackLegalMoves);
     }
 
     // For all given Pieces, regardless of color, return all the legalmoves on the current board.
@@ -52,6 +48,14 @@ public class Board {
     // Getting the coordinate of a square
     public Square getSquare(final int squareCoordinate){
         return null;
+    }
+
+    public Collection<Piece> getBlackPieces(){
+        return this.blackPieces;
+    }
+
+    public Collection<Piece> getWhitePieces(){
+        return this.whitePieces;
     }
 
     // For each occupied square on the board, get the activePieces.
@@ -145,6 +149,20 @@ public class Board {
         public Board build(){
             return new Board(this);
         }
+    }
+
+    // Used for early testing, will print out a board in the terminal
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < BoardUtils.NUM_SQUARES; i++){
+            final String squareText = this.gameBoard.get(i).toString();
+            sb.append(String.format("%3s", squareText));
+            if((i+1) % BoardUtils.NUM_SQUARES_PER_ROW == 0){
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
     }
 
 }

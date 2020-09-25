@@ -9,11 +9,15 @@ import java.util.Collection;
 public abstract class Piece {
 
     // All pieces require the current position on the board, the color and if it's made it's first move or not.
+    protected final PieceType pieceType;
     protected final int piecePosition;
     protected final Color pieceColor;
     protected final boolean isFirstMove;
 
-    Piece(final int piecePosition, final Color pieceColor){
+    Piece(final PieceType pieceType,
+            final int piecePosition,
+            final Color pieceColor){
+        this.pieceType = pieceType;
         this.piecePosition = piecePosition;
         this.pieceColor = pieceColor;
         this.isFirstMove = false;
@@ -29,6 +33,9 @@ public abstract class Piece {
     public boolean isFirstMove(){
         return this.isFirstMove;
     }
+    public PieceType getPieceType(){
+        return this.pieceType;
+    }
 
     // Passes in a board object that will be used to calculate legal moves for a given Piece,
     // ie. Knight, Queen, Pawn.
@@ -36,18 +43,51 @@ public abstract class Piece {
 
     // Nested enum class used for our toString testing print method.
     public enum PieceType{
-        ROOK("R"),
-        KNIGHT("N"),
-        BISHOP("B"),
-        QUEEN("Q"),
-        KING("K"),
-        PAWN("P");
+        ROOK("R") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KNIGHT("N") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        BISHOP("B") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        QUEEN("Q") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KING("K") {
+            @Override
+            public boolean isKing() {
+                return true;
+            }
+        },
+        PAWN("P") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        };
 
         private String pieceName;
 
         PieceType(final String pieceName){
             this.pieceName = pieceName;
         }
+
+        // To prevent us from casting.
+        public abstract boolean isKing();
 
         @Override
         public String toString() {
