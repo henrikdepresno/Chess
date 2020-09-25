@@ -3,6 +3,7 @@ package com.chess.engine.board;
 import com.chess.engine.Color;
 import com.chess.engine.pieces.*;
 import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 
@@ -56,6 +57,14 @@ public class Board {
 
     public Collection<Piece> getWhitePieces(){
         return this.whitePieces;
+    }
+
+    public Player whitePlayer(){
+        return whitePlayer;
+    }
+
+    public Player blackPlayer(){
+        return blackPlayer;
     }
 
     // For each occupied square on the board, get the activePieces.

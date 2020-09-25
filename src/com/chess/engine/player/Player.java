@@ -1,5 +1,6 @@
 package com.chess.engine.player;
 
+import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
@@ -36,6 +37,39 @@ public abstract class Player {
         throw new RuntimeException("Not a valid board!");
     }
 
-    // Get the pieces for a white or black player.
+    // a method to check if the move is in our list of legalmoves.
+    public boolean isMoveLegal(final Move move){
+        return this.legalMoves.contains(move);
+    }
+
+    //TODO: implement below methods
+    public boolean isInCheck(){
+        return false;
+    }
+
+    public boolean isInCheckMate(){
+        return false;
+    }
+
+    public boolean isInStaleMate(){
+        return false;
+    }
+
+    public boolean isCastled(){
+        return false;
+    }
+
+    // When making a move, we are constructing the new board layout/structure and need to pass all the values across
+    public MoveTransition makeMove(final Move move){
+        return null;
+    }
+
+    // Get the pieces for a white or black player polymorphically
     public abstract Collection<Piece> getActivePieces();
+
+    // Get the color for a player
+    public abstract Color getColor();
+
+    // Get the player itself
+    public abstract Player getOpponent(); 
 }
