@@ -29,6 +29,14 @@ public abstract class Player {
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
     }
 
+    public King getPlayerKing(){
+        return this.playerKing;
+    }
+
+    public Collection<Move> getLegalMoves(){
+        return this.legalMoves;
+    }
+
     // Get all the attacks currently on the King. If there are attacks on the King available, our King is in check.
     private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
         final List<Move> attackMoves = new ArrayList<>();
@@ -88,9 +96,23 @@ public abstract class Player {
     }
 
 
-    // When making a move, we are constructing the new board layout/structure and need to pass all the values across
+    /* When making a legal move, we are constructing the new board layout/structure and need to pass all the values across.
+     * If the move is illegal, pass the SAME board back and say its illegal move
+     * Create the new board and check: are there any attacks on the players king that will leave it in check?
+     * Then we shouldn't allow the player to make the move.
+     * Otherwise return the new transition board.
+     */
     public MoveTransition makeMove(final Move move){
-        return null;
+        if(!isMoveLegal(move)) {
+            return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
+        }
+        final Board transitionBoard = move.execute();
+        final Collection<Move> kingAttacks = Player.calculateAttacksOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
+                                                                           transitionBoard.currentPlayer().getLegalMoves());
+        if(!kingAttacks.isEmpty()){
+            return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
+        }
+        return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
     }
 
     // Get the pieces for a white or black player polymorphically

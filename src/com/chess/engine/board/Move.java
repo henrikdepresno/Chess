@@ -21,12 +21,20 @@ public abstract class Move {
         return this.destinationCoordinate;
     }
 
+    // We will create a new board. Remember, the board class is immutable so we won't mutate the existing board.
+    public abstract Board execute();
+
     // If the move we wish to make is to an unoccupied square
     public static final class NormalMove extends Move{
         public NormalMove(final Board board,
                    final Piece movedPiece,
                    final int destinationCoordinate){
             super(board, movedPiece, destinationCoordinate);
+        }
+
+        @Override
+        public Board execute() {
+            return null;
         }
 
     }
@@ -44,5 +52,9 @@ public abstract class Move {
             this.attackedPiece = attackedPiece;
         }
 
+        @Override
+        public Board execute() {
+            return null;
+        }
     }
 }
