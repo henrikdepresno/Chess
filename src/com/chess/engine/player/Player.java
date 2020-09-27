@@ -7,14 +7,17 @@ import com.chess.engine.board.Move;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Piece;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class Player {
 
     protected final Board board;
     protected final King playerKing;
     protected final Collection<Move> legalMoves;
-    //protected final Collection<Move> opponentMoves;
+    private final boolean isInCheck;
 
     Player(final Board board,
            final Collection<Move> legalMoves,
@@ -22,8 +25,19 @@ public abstract class Player {
                                   
         this.board = board;
         this.legalMoves = legalMoves;
-        //this.opponentMoves = opponentMoves;
-        this.playerKing = establishKing(); 
+        this.playerKing = establishKing();
+        this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
+    }
+
+    // Get all the attacks currently on the King. If there are attacks on the King available, our King is in check.
+    private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
+        final List<Move> attackMoves = new ArrayList<>();
+        for(final Move move: moves){
+            if(piecePosition == move.getDestinationCoordinate()){
+                attackMoves.add(move);
+            }
+        }
+        return Collections.unmodifiableList(attackMoves);
     }
 
     // To ensure that the player is in a legal "State", we will have to check if the King is
@@ -37,27 +51,42 @@ public abstract class Player {
         throw new RuntimeException("Not a valid board!");
     }
 
-    // a method to check if the move is in our list of legalmoves.
+    // A method to check if the move is in our list of legalmoves.
     public boolean isMoveLegal(final Move move){
         return this.legalMoves.contains(move);
     }
 
-    //TODO: implement below methods
+    // When the players King is checked and needs to move the King to escape.
     public boolean isInCheck(){
-        return false;
+        return this.isInCheck;
     }
 
+    // When the players King is already checked, but can't move anywhere that isn't checked either.
     public boolean isInCheckMate(){
-        return false;
+        return this.isInCheck && !hasEscapeMoves();
     }
 
+    // Current players King is not checked, but doesn't have any escape moves/no moves to make.
+    // The players only moves put the King in check.
     public boolean isInStaleMate(){
-        return false;
+        return !this.isInCheck && !hasEscapeMoves();
     }
 
     public boolean isCastled(){
         return false;
     }
+
+    // If there are any moves to make, return true, when that move is done. Otherwise return false;
+    protected boolean hasEscapeMoves(){
+        for(final Move move: this.legalMoves){
+            final MoveTransition transition = makeMove(move);
+            if(transition.getMoveStatus().isDone()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // When making a move, we are constructing the new board layout/structure and need to pass all the values across
     public MoveTransition makeMove(final Move move){

@@ -17,6 +17,10 @@ public abstract class Move {
         this.destinationCoordinate = destinationCoordinate; 
     }
 
+    public int getDestinationCoordinate(){
+        return this.destinationCoordinate;
+    }
+
     // If the move we wish to make is to an unoccupied square
     public static final class NormalMove extends Move{
         public NormalMove(final Board board,
