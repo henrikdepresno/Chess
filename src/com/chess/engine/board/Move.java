@@ -2,6 +2,8 @@ package com.chess.engine.board;
 
 import com.chess.engine.pieces.Piece;
 
+import static com.chess.engine.board.Board.*;
+
 public abstract class Move {
 
     // To make a move, we need the board layout, the piece we want to move, and the destination.
@@ -32,9 +34,30 @@ public abstract class Move {
             super(board, movedPiece, destinationCoordinate);
         }
 
+        // When making a move on a board, we are not going to mutate the board.
+        // We will materialise a new board with the previous state + the new move.
         @Override
         public Board execute() {
-            return null;
+            // Build a new board to return using Board builder.
+            final Builder builder = new Builder();
+
+            // Set the current players pieces on the board, except the moved piece.
+            // TODO: Hashcode and equals for the Piece class. Currently just reference equality check.
+            for(final Piece piece: this.board.currentPlayer().getActivePieces()){
+                if(!this.movedPiece.equals(piece)){
+                    builder.setPiece(piece);
+                }
+            }
+
+            // Set the opponent pieces on the board
+            for(final Piece piece: this.board.currentPlayer().getOpponent().getActivePieces()){
+                builder.setPiece(piece);
+            }
+            
+            // Move the moved Piece
+            builder.setPiece(null);
+            builder.setMoveMaker(this.board.currentPlayer().getOpponent().getColor());
+            return builder.build();
         }
 
     }
