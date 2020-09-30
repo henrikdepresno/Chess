@@ -19,7 +19,7 @@ public class King extends Piece{
     // so these coordinates offsets can always be applied with no further iterations to check paths.
     private final static int[] POTENTIAL_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    public King(Color pieceColor, int piecePosition) {
+    public King(final Color pieceColor, final int piecePosition) {
         super(PieceType.KING, piecePosition, pieceColor);
     }
 

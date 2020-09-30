@@ -25,7 +25,7 @@ public class Board {
     private final Player currentPlayer;
 
     // Using Builder pattern for the constructor
-    private Board(Builder builder){
+    private Board(final Builder builder){
         this.gameBoard = createGameBoard(builder);
         this.blackPieces = calculateActivePieces(this.gameBoard, Color.BLACK);
         this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
@@ -37,7 +37,7 @@ public class Board {
         // Constructing the players with their own moves and the counterpart moves to determine legal castle moves
         this.whitePlayer = new WhitePlayer(this, whiteLegalMoves, blackLegalMoves);
         this.blackPlayer = new BlackPlayer(this, whiteLegalMoves, blackLegalMoves);
-        this.currentPlayer = null;
+        this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer, this.blackPlayer);
     }
 
     // For all given Pieces, regardless of color, return all the legalmoves on the current board.
