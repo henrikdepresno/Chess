@@ -60,6 +60,11 @@ public class King extends Piece{
         return Collections.unmodifiableList(legalMoves);
     }
 
+    @Override
+    public Piece movePiece(final Move move) {
+        return new King(move.getMovedPiece().getPieceColor(), move.getDestinationCoordinate());
+    }
+
     // toString for testing
     public String toString(){
         return PieceType.KING.toString();

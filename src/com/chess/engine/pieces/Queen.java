@@ -62,6 +62,11 @@ public class Queen extends Piece{
         return Collections.unmodifiableList(legalMoves);
     }
 
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Queen(move.getMovedPiece().getPieceColor(), move.getDestinationCoordinate());
+    }
+
     // toString for early testing
     @Override
     public String toString(){

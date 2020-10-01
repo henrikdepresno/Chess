@@ -27,9 +27,7 @@ public abstract class Piece {
     public Color getPieceColor(){
         return this.pieceColor;
     }
-
     public int getPiecePosition(){ return this.piecePosition; }
-
     public boolean isFirstMove(){
         return this.isFirstMove;
     }
@@ -40,6 +38,9 @@ public abstract class Piece {
     // Passes in a board object that will be used to calculate legal moves for a given Piece,
     // ie. Knight, Queen, Pawn.
     public abstract Collection<Move> calcLegalMove(final Board board);
+
+    // Our Piece is immutable, so we have to return a new version of it.
+    public abstract Piece movePiece(Move move);
 
     // Nested enum class used for our toString testing print method.
     public enum PieceType{

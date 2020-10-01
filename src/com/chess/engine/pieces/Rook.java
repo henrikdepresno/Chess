@@ -65,6 +65,11 @@ public class Rook extends Piece{
         return Collections.unmodifiableList(legalMoves);
     }
 
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Rook(move.getMovedPiece().getPieceColor(), move.getDestinationCoordinate());
+    }
+
     // toString for early testing
     @Override
     public String toString(){
