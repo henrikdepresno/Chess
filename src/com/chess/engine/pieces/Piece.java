@@ -39,7 +39,7 @@ public abstract class Piece {
     // ie. Knight, Queen, Pawn.
     public abstract Collection<Move> calcLegalMove(final Board board);
 
-    // Our Piece is immutable, so we have to return a new version of it.
+    // Our Piece is immutable, so we have to return a new version of it to place on the new board.
     public abstract Piece movePiece(Move move);
 
     // Nested enum class used for our toString testing print method.

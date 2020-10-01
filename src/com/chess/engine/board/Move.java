@@ -58,7 +58,7 @@ public abstract class Move {
             }
             
             // Move the moved Piece
-            builder.setPiece(null);
+            builder.setPiece(this.movedPiece.movePiece(this));
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getColor());
             return builder.build();
         }
