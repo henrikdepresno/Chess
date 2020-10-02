@@ -31,9 +31,14 @@ public abstract class Move {
 
     @Override
     public boolean equals(final Object other){
-        
-    }
+        if(this == other) return true;
+        if(!(other instanceof Move)) return false;
 
+        final Move otherMove = (Move) other;
+        return getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
+               getMovedPiece().equals(otherMove.getMovedPiece());
+    }
+                                              
     public int getCurrentCoordinate(){
         return  this.movedPiece.getPiecePosition();
     }
