@@ -10,6 +10,7 @@ public abstract class Move {
     final Board board;
     final Piece movedPiece;
     final int destinationCoordinate;
+    public static final Move NULL_MOVE = new NullMove();
 
     private Move(final Board board,
                  final Piece movedPiece,
@@ -18,7 +19,9 @@ public abstract class Move {
         this.movedPiece = movedPiece;
         this.destinationCoordinate = destinationCoordinate; 
     }
-
+    public int getCurrentCoordinate(){
+        return  this.movedPiece.getPiecePosition();
+    }
     public int getDestinationCoordinate(){
         return this.destinationCoordinate;
     }
@@ -26,8 +29,30 @@ public abstract class Move {
         return this.movedPiece;
     }
 
-    // We will create a new board. Remember, the board class is immutable so we won't mutate the existing board.
-    public abstract Board execute();
+    // When making a move on a board, we are not going to mutate the board.
+    // We will materialise a new board with the previous state + the new move.
+    public Board execute() {
+        // Build a new board to return using Board builder.
+        final Builder builder = new Builder();
+
+        // Set the current players pieces on the board, except the moved piece.
+        // TODO: Hashcode and equals for the Piece class. Currently just reference equality check.
+        for(final Piece piece: this.board.currentPlayer().getActivePieces()){
+            if(!this.movedPiece.equals(piece)){
+                builder.setPiece(piece);
+            }
+        }
+
+        // Set the opponent pieces on the board
+        for(final Piece piece: this.board.currentPlayer().getOpponent().getActivePieces()){
+            builder.setPiece(piece);
+        }
+
+        // Move the moved Piece
+        builder.setPiece(this.movedPiece.movePiece(this));
+        builder.setMoveMaker(this.board.currentPlayer().getOpponent().getColor());
+        return builder.build();
+    }
 
     // If the move we wish to make is to an unoccupied square
     public static final class NormalMove extends Move{
@@ -36,37 +61,10 @@ public abstract class Move {
                           final int destinationCoordinate){
             super(board, movedPiece, destinationCoordinate);
         }
-
-        // When making a move on a board, we are not going to mutate the board.
-        // We will materialise a new board with the previous state + the new move.
-        @Override
-        public Board execute() {
-            // Build a new board to return using Board builder.
-            final Builder builder = new Builder();
-
-            // Set the current players pieces on the board, except the moved piece.
-            // TODO: Hashcode and equals for the Piece class. Currently just reference equality check.
-            for(final Piece piece: this.board.currentPlayer().getActivePieces()){
-                if(!this.movedPiece.equals(piece)){
-                    builder.setPiece(piece);
-                }
-            }
-
-            // Set the opponent pieces on the board
-            for(final Piece piece: this.board.currentPlayer().getOpponent().getActivePieces()){
-                builder.setPiece(piece);
-            }
-            
-            // Move the moved Piece
-            builder.setPiece(this.movedPiece.movePiece(this));
-            builder.setMoveMaker(this.board.currentPlayer().getOpponent().getColor());
-            return builder.build();
-        }
-
-    }
+     }
 
     // If the move we want to make is to an occupied square of enemy color.
-    public static final class AttackingMove extends Move{
+    public static class AttackingMove extends Move{
 
         final Piece attackedPiece;
 
@@ -81,6 +79,93 @@ public abstract class Move {
         @Override
         public Board execute() {
             return null;
+        }
+    }
+
+    public static final class PawnMove extends Move{
+        public PawnMove(final Board board,
+                        final Piece movedPiece,
+                        final int destinationCoordinate){
+            super(board, movedPiece, destinationCoordinate);
+        }
+    }
+
+    public static class PawnAttackMove extends AttackingMove{
+        public PawnAttackMove(final Board board,
+                              final Piece movedPiece,
+                              final int destinationCoordinate,
+                              final Piece attackedPiece){
+            super(board, movedPiece, destinationCoordinate, attackedPiece);
+        }
+    }
+
+    public static final class PawnEnPassantAttackMove extends PawnAttackMove{
+        public PawnEnPassantAttackMove(final Board board,
+                                       final Piece movedPiece,
+                                       final int destinationCoordinate,
+                                       final Piece attackedPiece){
+            super(board, movedPiece, destinationCoordinate, attackedPiece);
+        }
+    }
+
+    public static final class PawnJump extends Move{
+        public PawnJump(final Board board,
+                        final Piece movedPiece,
+                        final int destinationCoordinate){
+            super(board, movedPiece, destinationCoordinate);
+        }
+    }
+
+    static abstract class CastleMove extends Move{
+        public CastleMove(final Board board,
+                          final Piece movedPiece,
+                          final int destinationCoordinate){
+            super(board, movedPiece, destinationCoordinate);
+        }
+    }
+
+    public static final class KingSideCastleMove extends CastleMove{
+        public KingSideCastleMove(final Board board,
+                                  final Piece movedPiece,
+                                  final int destinationCoordinate){
+            super(board, movedPiece, destinationCoordinate);
+        }
+    }
+
+    public static final class QueenSideCastleMove extends CastleMove{
+        public QueenSideCastleMove(final Board board,
+                                   final Piece movedPiece,
+                                   final int destinationCoordinate){
+            super(board, movedPiece, destinationCoordinate);
+        }
+    }
+
+    public static final class NullMove extends Move{
+        public NullMove(){
+            super(null, null, -1);
+        }
+
+        @Override
+        public Board execute(){
+            throw new RuntimeException("Cannot execute the null move!");
+        }
+    }
+
+    public static class MoveFactory{
+        private MoveFactory(){
+            throw new RuntimeException("Not instantiable!");
+        }
+
+        public static Move createMove(final Board board,
+                                      final int currentCoordinate,
+                                      final int destinationCoordinate){
+            for(final Move move: board.getAllLegalMoves()){
+                if(move.getCurrentCoordinate() == currentCoordinate &&
+                   move.getDestinationCoordinate() == destinationCoordinate){
+                    return move;
+                }
+            }
+            return NULL_MOVE;
         }
     }
 }
