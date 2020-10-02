@@ -68,7 +68,6 @@ public abstract class Move {
         final Builder builder = new Builder();
 
         // Set the current players pieces on the board, except the moved piece.
-        // TODO: Hashcode and equals for the Piece class. Currently just reference equality check.
         for(final Piece piece: this.board.currentPlayer().getActivePieces()){
             if(!this.movedPiece.equals(piece)){
                 builder.setPiece(piece);
@@ -97,7 +96,6 @@ public abstract class Move {
 
     // If the move we want to make is to an occupied square of enemy color.
     public static class AttackingMove extends Move{
-
         final Piece attackedPiece;
 
         public AttackingMove(final Board board,
@@ -109,8 +107,31 @@ public abstract class Move {
         }
 
         @Override
+        public int hashCode(){
+            return this.attackedPiece.hashCode() + super.hashCode();
+        }
+
+        @Override
+        public boolean equals(final Object other){
+            if(this == other) return true;
+            if(!(other instanceof AttackingMove)) return false;
+            final AttackingMove otherAttackingMove = (AttackingMove) other;
+            return super.equals(otherAttackingMove) && getAttackedPiece().equals(otherAttackingMove.getAttackedPiece());
+        }
+
+        @Override
         public Board execute() {
             return null;
+        }
+
+        @Override
+        public boolean isAttack(){
+            return true;
+        }
+
+        @Override
+        public Piece getAttackedPiece(){
+            return this.attackedPiece;
         }
     }
 
