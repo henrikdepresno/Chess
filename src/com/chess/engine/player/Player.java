@@ -37,8 +37,8 @@ public abstract class Player {
         return this.legalMoves;
     }
 
-    // Get all the attacks currently on the King. If there are attacks on the King available, our King is in check.
-    private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
+    // Get all the attacks currently on square. If there are attacks on the King available, our King is in check.
+    protected static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
         final List<Move> attackMoves = new ArrayList<>();
         for(final Move move: moves){
             if(piecePosition == move.getDestinationCoordinate()){

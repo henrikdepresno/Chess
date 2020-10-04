@@ -37,11 +37,26 @@ public class WhitePlayer extends Player{
     protected Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentLegals) {
         final List<Move> kingCastles = new ArrayList<>();
         if(this.playerKing.isFirstMove() && !this.isInCheck()){
+            // White king side castle
             if(!this.board.getSquare(61).isSquareOccupied() &&
                !this.board.getSquare(62).isSquareOccupied()){
                 final Square rookSquare = this.board.getSquare(63);
                 if(rookSquare.isSquareOccupied() && rookSquare.getPiece().isFirstMove()){
-                    //TODO: add a castle move.
+                    if(Player.calculateAttacksOnTile(61, opponentLegals).isEmpty() &&
+                       Player.calculateAttacksOnTile(62, opponentLegals).isEmpty() &&
+                       rookSquare.getPiece().getPieceType().isRook()){
+                    }
+                    //TODO: add a castle move
+                    kingCastles.add(null);
+                }
+            }
+            //White queen side castle
+            if(!this.board.getSquare(59).isSquareOccupied() &&
+               !this.board.getSquare(58).isSquareOccupied() &&
+               !this.board.getSquare(57).isSquareOccupied()){
+                final Square rookSquare = this.board.getSquare(56);
+                if(rookSquare.isSquareOccupied() && rookSquare.getPiece().isFirstMove()){
+                    //TODO: add castle move
                     kingCastles.add(null);
                 }
             }
