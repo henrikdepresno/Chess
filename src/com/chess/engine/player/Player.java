@@ -122,5 +122,10 @@ public abstract class Player {
     public abstract Color getColor();
 
     // Get the player itself
-    public abstract Player getOpponent(); 
+    public abstract Player getOpponent();
+
+    // Castle move
+    protected abstract Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentLegals){
+
+    }
 }
