@@ -4,6 +4,7 @@ import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.KingSideCastleMove;
+import com.chess.engine.board.Move.QueenSideCastleMove;
 import com.chess.engine.board.Square;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
@@ -57,7 +58,7 @@ public class WhitePlayer extends Player{
                !this.board.getSquare(57).isSquareOccupied()){
                 final Square rookSquare = this.board.getSquare(56);
                 if(rookSquare.isSquareOccupied() && rookSquare.getPiece().isFirstMove()){
-                    kingCastles.add(new Move.QueenSideCastleMove(this.board, this.playerKing, 58, (Rook)rookSquare.getPiece(), rookSquare.getSquareCoordinate(), 59));
+                    kingCastles.add(new QueenSideCastleMove(this.board, this.playerKing, 58, (Rook)rookSquare.getPiece(), rookSquare.getSquareCoordinate(), 59));
                 }
             }
         }

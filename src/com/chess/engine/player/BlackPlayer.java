@@ -3,8 +3,11 @@ package com.chess.engine.player;
 import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.KingSideCastleMove;
+import com.chess.engine.board.Move.QueenSideCastleMove;
 import com.chess.engine.board.Square;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,8 +49,7 @@ public class BlackPlayer extends Player{
                             Player.calculateAttacksOnTile(6, opponentLegals).isEmpty() &&
                             rookSquare.getPiece().getPieceType().isRook()){
                     }
-                    //TODO: add a castle move
-                    kingCastles.add(null);
+                    kingCastles.add(new KingSideCastleMove(this.board, this.playerKing, 6, (Rook)rookSquare.getPiece(), rookSquare.getSquareCoordinate(), 5));
                 }
             }
             // Black queen side castle
@@ -57,8 +59,7 @@ public class BlackPlayer extends Player{
 
                 final Square rookSquare = this.board.getSquare(0);
                 if(rookSquare.isSquareOccupied() && rookSquare.getPiece().isFirstMove()){
-                    //TODO: add castle move
-                    kingCastles.add(null);
+                    kingCastles.add(new QueenSideCastleMove(this.board, this.playerKing, 2, (Rook) rookSquare.getPiece(), rookSquare.getSquareCoordinate(), 3));
                 }
             }
         }
