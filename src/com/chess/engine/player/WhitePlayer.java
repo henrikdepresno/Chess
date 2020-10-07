@@ -3,8 +3,10 @@ package com.chess.engine.player;
 import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.KingSideCastleMove;
 import com.chess.engine.board.Square;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +36,7 @@ public class WhitePlayer extends Player{
     }
 
     @Override
-    protected Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentLegals) {
+    protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals, final Collection<Move> opponentLegals) {
         final List<Move> kingCastles = new ArrayList<>();
         if(this.playerKing.isFirstMove() && !this.isInCheck()){
             // White king side castle
@@ -46,8 +48,7 @@ public class WhitePlayer extends Player{
                        Player.calculateAttacksOnTile(62, opponentLegals).isEmpty() &&
                        rookSquare.getPiece().getPieceType().isRook()){
                     }
-                    //TODO: add a castle move
-                    kingCastles.add(null);
+                    kingCastles.add(new KingSideCastleMove(this.board, this.playerKing, 62, (Rook)rookSquare.getPiece(), rookSquare.getSquareCoordinate(), 61));
                 }
             }
             //White queen side castle

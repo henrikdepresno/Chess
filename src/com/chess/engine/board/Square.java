@@ -41,6 +41,9 @@ public abstract class Square {
 
     public abstract Piece getPiece();
 
+    public int getSquareCoordinate() {
+        return this.squareCoordinate;
+    }
 
     //This concrete class is instantiated and used when we want to create an empty square with no piece
     //Static for readability and to avoid inheritance
