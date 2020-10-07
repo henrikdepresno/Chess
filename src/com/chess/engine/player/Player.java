@@ -27,6 +27,10 @@ public abstract class Player {
                                   
         this.board = board;
         this.playerKing = establishKing();
+        // This can also be written with the Collections class:
+        //  playerLegals.addAll(calculateKingCastles(playerLegals, opponentLegals));
+        //  this.legalMoves = Collections.unmodifiableCollection(playerLegals);
+        //  But it will throw an UnsupportedOperationException for the .addAll method.
         this.legalMoves = ImmutableList.copyOf(Iterables.concat(calculateKingCastles(legalMoves, opponentMoves)));
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
     }
