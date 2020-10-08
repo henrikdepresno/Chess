@@ -27,7 +27,7 @@ public abstract class Player {
                                   
         this.board = board;
         this.playerKing = establishKing();
-        // This can also be written with the Collections class:
+        //  This can also be written with the Collections class:
         //  playerLegals.addAll(calculateKingCastles(playerLegals, opponentLegals));
         //  this.legalMoves = Collections.unmodifiableCollection(playerLegals);
         //  But it will throw an UnsupportedOperationException for the .addAll method.
