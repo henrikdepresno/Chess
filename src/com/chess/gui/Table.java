@@ -2,6 +2,8 @@ package com.chess.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Table {
 
@@ -12,6 +14,7 @@ public class Table {
         this.gameFrame = new JFrame("JChess");
         final JMenuBar tableMenuBar = new JMenuBar();
         populateMenuBar(tableMenuBar);
+        this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.gameFrame.setVisible(true);
     }
@@ -21,6 +24,15 @@ public class Table {
     }
 
     private JMenu createFileMenu() {
+        final JMenu fileMenu = new JMenu("File");
+        final JMenuItem openPGN = new JMenuItem("Load PGN file");
+        openPGN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Open up the specified pgn file");
+            }
+        });
+        fileMenu.add(openPGN);
+        return fileMenu;
     }
-
 }
