@@ -16,7 +16,7 @@ public class Table {
     private final BoardPanel boardPanel;
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
-    private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10)
+    private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
 
     public Table(){
         this.gameFrame = new JFrame("JChess");
