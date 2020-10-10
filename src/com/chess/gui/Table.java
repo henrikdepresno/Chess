@@ -1,5 +1,6 @@
 package com.chess.gui;
 
+import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 
 import javax.swing.*;
@@ -12,14 +13,19 @@ import java.util.List;
 public class Table {
 
     private final JFrame gameFrame;
+    private final BoardPanel boardPanel;
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
+    private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10)
 
     public Table(){
         this.gameFrame = new JFrame("JChess");
+        this.gameFrame.setLayout(new BorderLayout());
         final JMenuBar tableMenuBar = createTableMenuBar();
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+        this.boardPanel = new BoardPanel();
+        this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.setVisible(true);
     }
 
@@ -49,7 +55,7 @@ public class Table {
             super(new GridLayout(8,8));
             this.boardTiles = new ArrayList<>();
             for(int i = 0; i < BoardUtils.NUM_SQUARES; i++){
-                final TilePanel tilePanel = new TilePanel();
+                final TilePanel tilePanel = new TilePanel(this, i);
                 this.boardTiles.add(tilePanel);
                 add(tilePanel);
             }
@@ -59,6 +65,18 @@ public class Table {
     }
 
     private class TilePanel extends JPanel{
-        
+        private final int tileId;
+
+        TilePanel(final BoardPanel boardPanel, final int tileId){
+            super(new GridBagLayout());
+            this.tileId = tileId;
+            setPreferredSize(TILE_PANEL_DIMENSION);
+            assignTileColor();
+            validate();
+        }
+
+        private void assignTileColor(){
+                
+        }
     }
 }
