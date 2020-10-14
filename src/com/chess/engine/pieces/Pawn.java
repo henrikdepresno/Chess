@@ -5,7 +5,6 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.NormalMove;
-import com.chess.engine.board.Square;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,8 +43,8 @@ public class Pawn extends Piece{
                 //TODO: more work to do here
                 legalMoves.add(new NormalMove(board, this, potentialDestinationCoordinate));
             } else if(currentCoordinateOffset == 16 && this.isFirstMove()
-                                                    && (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceColor().isBlack())
-                                                    || (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceColor().isWhite())){
+                                                    && (BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceColor().isBlack())
+                                                    || (BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceColor().isWhite())){
                 final int behindPotentialDestinationCoordinate = this.piecePosition + (this.getPieceColor().getDirection()*8);
                 if(board.getSquare(behindPotentialDestinationCoordinate) != null &&
                    !board.getSquare(potentialDestinationCoordinate).isSquareOccupied()){
