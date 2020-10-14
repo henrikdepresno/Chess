@@ -1,11 +1,17 @@
 package com.chess.gui;
 
+import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.beans.FeatureDescriptor;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +89,20 @@ public class Table {
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColor();
             validate();
+        }
+
+        private Board assignTilePieceIcon(final Board board){
+            this.removeAll();
+            if(board.getSquare(this.tileId).isSquareOccupied()){
+                String pieceIconPath = "";
+                try {
+                    final BufferedImage image = ImageIO.read(new File(pieceIconPath + board.getSquare(this.tileId).getPiece().getPieceColor().toString().substring(0,1) +
+                            board.getSquare(this.tileId).getPiece().toString() + ".gif"));
+                    add(new JLabel(new ImageIcon(image)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         private void assignTileColor(){
