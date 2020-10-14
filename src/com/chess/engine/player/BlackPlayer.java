@@ -58,7 +58,10 @@ public class BlackPlayer extends Player{
                !this.board.getSquare(3).isSquareOccupied()){
 
                 final Square rookSquare = this.board.getSquare(0);
-                if(rookSquare.isSquareOccupied() && rookSquare.getPiece().isFirstMove()){
+                if(rookSquare.isSquareOccupied() && rookSquare.getPiece().isFirstMove() &&
+                    Player.calculateAttacksOnTile(2, opponentLegals).isEmpty() &&
+                    Player.calculateAttacksOnTile(3, opponentLegals).isEmpty() &&
+                    rookSquare.getPiece().getPieceType().isRook()){
                     kingCastles.add(new QueenSideCastleMove(this.board, this.playerKing, 2, (Rook) rookSquare.getPiece(), rookSquare.getSquareCoordinate(), 3));
                 }
             }
