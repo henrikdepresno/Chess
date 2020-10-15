@@ -103,6 +103,7 @@ public class Table {
                     e.printStackTrace();
                 }
             }
+            return null;
         }
 
         private void assignTileColor(){
