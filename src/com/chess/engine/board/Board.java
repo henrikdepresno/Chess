@@ -51,7 +51,8 @@ public class Board {
 
     // Getting the coordinate of a square
     public Square getSquare(final int squareCoordinate){
-        return null;
+        //We need to solve this
+        return gameBoard.get(squareCoordinate);
     }
 
     public Collection<Piece> getBlackPieces(){
